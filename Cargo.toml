@@ -1,0 +1,17 @@
+[package]
+name = "git-autocomplete"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+description = "Offline, deterministic commit message completion for Git"
+license = "MIT"
+readme = "README.md"
+keywords = ["git", "completion", "conventional-commits", "cli", "offline"]
+categories = ["command-line-utilities", "development-tools"]
+include = ["src/**", "completions/**", "README.md", "LICENSE", "CHANGELOG.md", "CONTRIBUTING.md", "VERIFICATION.md", "scripts/DEMO.md", "Cargo.lock"]
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

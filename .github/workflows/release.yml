@@ -1,0 +1,78 @@
+name: Release
+on:
+  push:
+    tags: ['v[0-9]*']
+permissions:
+  contents: read
+jobs:
+  verify:
+    uses: ./.github/workflows/ci.yml
+  build:
+    needs: verify
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+          - os: ubuntu-22.04-arm
+            target: aarch64-unknown-linux-gnu
+          - os: macos-15
+            target: aarch64-apple-darwin
+          - os: macos-15-intel
+            target: x86_64-apple-darwin
+          - os: windows-2022
+            target: x86_64-pc-windows-msvc
+          - os: windows-11-arm
+            target: aarch64-pc-windows-msvc
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: Link the Windows C runtime statically
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: '"RUSTFLAGS=-C target-feature=+crt-static" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append'
+      - name: Verify tag matches Cargo version
+        shell: bash
+        run: |
+          version=$(cargo metadata --offline --no-deps --format-version 1 | python3 -c 'import json,sys; print(json.load(sys.stdin)["packages"][0]["version"])')
+          test "$GITHUB_REF_NAME" = "v$version"
+      - run: cargo build --release --locked --offline --target ${{ matrix.target }}
+      - name: Archive with SHA-256
+        shell: bash
+        env:
+          BUILD_TARGET: ${{ matrix.target }}
+        run: |
+          executable=git-autocomplete
+          archive_suffix=.tar.gz
+          if [[ "$RUNNER_OS" == Windows ]]; then executable=git-autocomplete.exe; archive_suffix=.zip; fi
+          python3 scripts/package.py --binary "target/$BUILD_TARGET/release/$executable" --target "$BUILD_TARGET"
+          python3 scripts/test-install.py "dist/git-autocomplete-$BUILD_TARGET$archive_suffix"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}
+          path: dist/*
+          if-no-files-found: error
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Verify checksums and create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          cd dist
+          cat *.sha256 > SHA256SUMS
+          sha256sum --check SHA256SUMS
+          gh release create "$RELEASE_TAG" --verify-tag --draft --generate-notes --title "$RELEASE_TAG" ./*.tar.gz ./*.zip SHA256SUMS

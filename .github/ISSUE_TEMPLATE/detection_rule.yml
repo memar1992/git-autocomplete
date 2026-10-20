@@ -1,0 +1,16 @@
+name: Detection rule
+description: Suggest a deterministic heuristic
+body:
+  - type: textarea
+    id: example
+    attributes:
+      label: Example staged changes and desired message
+    validations:
+      required: true
+  - type: textarea
+    id: ambiguity
+    attributes:
+      label: When would this rule be wrong?
+      description: Include counterexamples and a conservative fallback.
+    validations:
+      required: true

@@ -1,0 +1,23 @@
+name: Bug report
+description: Report an incorrect suggestion or completion problem
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What happened?
+      description: Include the expected message or completion behavior. Remove private repository data.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: A small staged diff or disposable repository script helps. Do not include secrets.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: OS, shell version, Git version, and git-autocomplete version
+    validations:
+      required: true
