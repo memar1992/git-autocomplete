@@ -25,10 +25,13 @@ Install once for your user account, then activate completion for your shell. The
 This source tree includes a release workflow. Hosted binaries and Cargo, Homebrew, Scoop, or Winget packages have **not been published** by this project setup. Until a maintainer publishes a release, install from source:
 
 ```sh
-# Run from this project's directory, which contains Cargo.toml.
 # Rust 1.74+ and Git 2.30+ must already be installed.
+git clone https://github.com/memar1992/git-autocomplete.git
+cd git-autocomplete
 cargo install --path . --locked --offline
 ```
+
+If you already have a checkout, run the `cargo install` command from its directory.
 
 Cargo installs into `~/.cargo/bin`, or `%USERPROFILE%\.cargo\bin` on Windows. Building this package needs no crates downloaded from the network.
 
@@ -45,7 +48,7 @@ Source builds also need a platform linker: Xcode Command Line Tools on macOS, a 
 
 ### Release archives
 
-When a release is available on this repository's Releases page, download the matching archive and `SHA256SUMS`. Each archive includes the executable, the four shell integrations, and this documentation. The release workflow builds:
+When a release is available on [GitHub Releases](https://github.com/memar1992/git-autocomplete/releases), download the matching archive and `SHA256SUMS`. Each archive includes the executable, the four shell integrations, and this documentation. The release workflow builds:
 
 | System | Rust target | Archive |
 | --- | --- | --- |
