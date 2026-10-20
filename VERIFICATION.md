@@ -13,7 +13,7 @@ Executed here:
 - Native macOS ARM64 archive installation in a temporary directory, including PATH lookup, embedded shell scripts, suggestions, replacement, uninstall, and index/worktree preservation.
 - Cargo source installation, forced replacement, and uninstall using an isolated install root.
 - Git command checks in a real unborn repository with spaces, a newline, and pathspec metacharacters in paths, executable helpers configured, and an unchanged index/worktree.
-- CI/release workflow and issue-template YAML syntax checks.
+- Release workflow and issue-template YAML syntax checks.
 - Release-build latency measurements below.
 - A replay of the reported multi-file commit in a disposable repository produced a summary of AI reply generation, push notification job processing, and push subscription persistence. The original repository was only read.
 
@@ -35,6 +35,6 @@ Not executed here:
 - Linux/Windows/Intel execution, Rust 1.74 compatibility, or execution of cross-platform release archives.
 - Upgrading from an older published release; replacement tests use the current build.
 
-These checks are implemented in the CI and release workflows. Their presence is not evidence that they have passed. The release workflow now waits for the full CI workflow and checks each native archive before upload.
+Tests are available for contributors and maintainers to run locally and report in pull requests. Pushes and pull requests do not run CI. The separate release workflow builds and checks native archives when a version tag is pushed; those archive checks do not establish that the full test suite passed on every platform.
 
-The GitHub destination is [memar1992/git-autocomplete](https://github.com/memar1992/git-autocomplete). The checkout now has an initial commit, but remote CI and publishing could not run here: writing `.git/config` is denied by the workspace permissions, GitHub CLI and API credentials are unavailable, and terminal DNS access to GitHub fails. The remote repository's contents and CI status could not be inspected. Fish and PowerShell are not installed, and access to the local Docker daemon is denied. A macOS ARM64 candidate archive and checksum were produced locally under `dist/`. No GitHub Release, crates.io package, Homebrew formula, Scoop manifest, or Winget package was published by this session.
+The GitHub destination is [memar1992/git-autocomplete](https://github.com/memar1992/git-autocomplete). The reported hosted jobs never started because the repository owner's account was locked by a billing issue. Contribution review now uses PRs and local check reports. Release packaging still needs the billing lock resolved before hosted builds can run. GitHub CLI and API credentials are unavailable here, and terminal DNS access to GitHub fails, so remote publishing and repository settings could not be verified or changed. Fish and PowerShell are not installed, and access to the local Docker daemon is denied. A macOS ARM64 candidate archive and checksum were produced locally under `dist/`. No GitHub Release, crates.io package, Homebrew formula, Scoop manifest, or Winget package was published by this session.

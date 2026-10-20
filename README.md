@@ -251,4 +251,6 @@ To uninstall, remove the source line from your shell startup file, delete `~/.co
 
 ## Development
 
+Contributions use pull requests with maintainer review and reported local test results. Pushes and pull requests do not run CI. Release packaging runs separately when a maintainer pushes a version tag.
+
 See [CONTRIBUTING.md](CONTRIBUTING.md) for tests and detection rules, [demo instructions](scripts/DEMO.md) for a disposable walkthrough, and [CHANGELOG.md](CHANGELOG.md) for release notes. MIT licensed.

@@ -10,4 +10,5 @@
 - Native Zsh, Bash, Fish, and PowerShell integration scripts.
 - Read-only, bounded Git execution with executable diff helpers disabled.
 - Temporary-repository tests, native completion checks, and archive workflows.
-- Isolated archive install checks, portable checksum files, and CI checks before release builds.
+- Isolated archive install checks and portable checksum files.
+- Contributions through pull requests with local validation and maintainer review; no CI on pushes or pull requests.
